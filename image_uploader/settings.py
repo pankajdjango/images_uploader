@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-z2*qu)n4648@nv71)%poe9i#3vo-yzola*dfg#iu!hgr*=k7+x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['5.181.217.57','img.pankajtrsrewa.com']
 
 
 # Application definition
@@ -75,11 +75,25 @@ WSGI_APPLICATION = 'image_uploader.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+        #    'default': {
+        #        'ENGINE': 'django.db.backends.sqlite3',
+        #        'NAME': BASE_DIR / 'db.sqlite3',
+        #    }
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'img',
+            'USER': 'postgres',
+            'PASSWORD': 'Dev-DB',
+            'HOST': 'localhost',
+            'PORT': '5432',
+            'OPTIONS': {
+                'client_encoding' : 'UTF8',
+                #'options': '-c search_path=public,erp,general'
+                #'options': '-c search_path=general',
+                #'timezone:' : 'Asia/Kolkata',
+                }
+            }
+        }
 
 
 # Password validation
@@ -115,8 +129,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
+import os
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 MEDIA_URL = '/media/'  #for use specific url for iamges
 MEDIA_ROOT = BASE_DIR / 'media' #for use specific media folder upload_to iamges
 # LOGIN_URL = 'http://pankajtrsrewa.com/'  # Set this to the URL of your custom login page
