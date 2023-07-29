@@ -119,6 +119,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'  #for use specific url for iamges
 MEDIA_ROOT = BASE_DIR / 'media' #for use specific media folder upload_to iamges
+# LOGIN_URL = 'http://pankajtrsrewa.com/'  # Set this to the URL of your custom login page
+LOGIN_URL="/login"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<style media="screen">
+  .success {
+    color: green;
+  }
+  .errorlist{
+        color: red;
+  }
+</style>
+<div class="container">
+  <div class="row  border border-2 p-4 rounded mt-2">
+  <div class="col-6">
+  <h3 class="text-center p-2 border rounded bg-info text-light">Register Account</h3>
+    {% if messages and not login %}
+    <ul class="messages">
+        {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <div class="offset-3 col-6">
+          <input type="submit" class="btn btn-primary form-control" value="Register" name="register"/>
+        </div>
+    </form>
+  </div>
+
+  <div class="col-6">
+  <h3 class="text-center p-2 border rounded bg-info text-light">Login Account</h3>
+    <form method="post">
+      {% csrf_token %}
+      {{login_form.as_p}}
+      <div class="offset-3 col-6">
+        <input type="submit" class="btn btn-primary form-control" value="Login" name="login"/>
+      </div>
+    </form>
+  </div>
+  </div>
+</div>
+{% endblock %}

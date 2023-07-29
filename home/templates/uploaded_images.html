@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <div class="container">
+    <div class="py-5 text-center bg-secondary text-white">
+      <h1 class=" mb-3">Uplaod Image</h1>
+      <form class="" action="" method="post" enctype="multipart/form-data">
+        {%csrf_token%}
+        {{form}}
+        <input type="submit" name="" value="Upload">
+      </form>
+    </div>
+
+    <div class="row">
+    {% for image in images %}
+    <div class="col-sm-4">
+      <div class="card m-2">
+        <img src="{{image.photo.url}}" class="card-img-top" height="" alt="">
+        <div class="card-footer">
+          <!-- <small class="text-muted">{{image.generated}}</small> -->
+          <small class="text-danger"><a href="/delete?id={{image.id}}">delete</a></small>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    </div>
+  </div>
+{% endblock  %}
+
+{% block js  %}
+    <script type="text/javascript">
+    $( document ).ready(function() {
+      if ("{{response}}" == "success"){
+        alert( "Image Uploaded Successfully." );
+      }else if ("{{response}}" == "fail") {
+        alert( "Something went wrong." );
+      }
+    });
+    </script>
+{% endblock  %}

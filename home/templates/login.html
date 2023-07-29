@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+  <div class="row  border border-2 p-4 rounded mt-2">
+  <div class="col-6">
+  <h3 class="text-center p-2 border rounded bg-info text-light">Register Account</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+  </div>
+  <div class="col-6">
+
+  </div>
+  </div>
+</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}
