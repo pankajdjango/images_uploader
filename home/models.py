@@ -76,12 +76,12 @@ class UserAccountForm(forms.ModelForm):
         model = UserAccount
         fields = ['first_name', 'last_name', 'mobile_no', 'email', 'password', 'confirm_password']
         widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'mobile_no': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
-            'password': forms.PasswordInput(attrs={'class': 'form-control'}),
-            'confirm_password': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}),
+            'mobile_no': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Mobile Number'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
+            'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
+            'confirm_password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm Password'}),
         }
 
     def clean_mobile_no(self):

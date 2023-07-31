@@ -9,8 +9,8 @@ import os
 def home(request):
     context = dict()
     user_id=request.session.get("user_id",1)
+    user_obj = UserAccount.objects.get(user_id=user_id)
     if request.method =="POST":
-        user_obj = UserAccount.objects.get(user_id=user_id)
         form = ImageForm(request.POST,request.FILES)
         if form.is_valid():
             file = request.FILES.getlist('photo')[0]
@@ -23,9 +23,9 @@ def home(request):
         else:
             context.update({"response": "fail"})
     if UserAccount.objects.filter(user_id=user_id,is_staff=True).exists():
-        images = Image.objects.filter().order_by('-id'),
+        images = Image.objects.filter().order_by('-id')
     else:
-        images = Image.objects.filter(user_id=user_id,active=True).order_by('-id')
+        images = Image.objects.filter(user_id=user_obj,active=True).order_by('-id')
     context.update({
         "form":ImageForm(),
         "images":images,
@@ -37,6 +37,7 @@ def home(request):
 def upload_images(request):
     context = dict()
     user_id=request.session.get("user_id",1)
+    user_obj = UserAccount.objects.get(user_id=user_id)
     if request.method == "POST":
         form = ImagesForm(request.POST, request.FILES)
         if form.is_valid():
@@ -45,7 +46,7 @@ def upload_images(request):
                 name, extension = os.path.splitext(file.name)
                 image_name = name + extension
                 duplicate = True if (Image.objects.filter(name=image_name).exists()) else False
-                obj = Image(photo=file,name=image_name,duplicate=duplicate,user_id=user_id)
+                obj = Image(photo=file,name=image_name,duplicate=duplicate,user_id=user_obj)
                 obj.save()
             context.update({"response": "success"})
         else:
@@ -63,7 +64,7 @@ def delete(request):
         image.delete()
     except Image.DoesNotExist:
         pass
-    return redirect("/upload_images")
+    return redirect("/upload")
 
 @already_login
 def register_user(request):

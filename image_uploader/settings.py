@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-z2*qu)n4648@nv71)%poe9i#3vo-yzola*dfg#iu!hgr*=k7+x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['5.181.217.57','img.pankajtrsrewa.com']
+ALLOWED_HOSTS = ['5.181.217.57','img.pankajtrsrewa.com','localhost','127.0.0.1:8000']
 
 
 # Application definition
@@ -130,11 +130,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 import os
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+#STATIC_URL = '/opt/app/images_uploader/static/'
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'  #for use specific url for iamges
-MEDIA_ROOT = BASE_DIR / 'media' #for use specific media folder upload_to iamges
+#MEDIA_ROOT = BASE_DIR / 'media' #for use specific media folder upload_to iamges
+MEDIA_ROOT = '/opt/app/img/media/' #for use specific media folder upload_to iamges
 # LOGIN_URL = 'http://pankajtrsrewa.com/'  # Set this to the URL of your custom login page
 LOGIN_URL="/login"
 
