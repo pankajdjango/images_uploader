@@ -26,6 +26,9 @@ class UserAccount(models.Model):
             return True
         else :
             return False
+    
+    def __str__(self):
+        return f"{self.first_name} {self.user_id}"
 
 
 def uploaded_images(instance, filename):
@@ -125,3 +128,38 @@ class LoginForm(forms.Form):
             if not user.check_password(password):
                 raise ValidationError(_('Incorrect password.'))
         return cleaned_data
+
+
+
+def uploaded_file(instance, filename):
+    root, ext = os.path.splitext(filename)
+    if not (Docs.objects.filter(name=instance.name).exists()):
+        return os.path.join("uploaded_docs", f"{root}{ext}")
+    else:
+        return os.path.join("uploaded_docs", "duplicate", filename)
+
+def validate_file_size(value):
+    MAX_UPLOAD_SIZE = 10 * 1024 * 1024 * 10  # 100MB
+    if value and value.size > MAX_UPLOAD_SIZE:
+        raise ValidationError(f"File size must be no more than {MAX_UPLOAD_SIZE} bytes.")
+
+class Docs(models.Model):
+    name = models.CharField(max_length=100, blank=True, null=True)
+    upload_file = models.FileField(upload_to=uploaded_file, validators=[validate_file_size], null=True, blank=True)
+    generated = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True)
+    duplicate = models.BooleanField(default=False)
+    user_id = models.ForeignKey(UserAccount, on_delete=models.CASCADE, db_column='user_id', null=True)
+
+    def delete(self, *args, **kwargs):
+        if self.upload_file:
+            if os.path.isfile(self.upload_file.path):
+                os.remove(self.upload_file.path)
+        super(Docs, self).delete(*args, **kwargs)
+    
+
+class DocsForm(forms.ModelForm):
+    class Meta:
+        model = Docs
+        fields = ('upload_file',)
+        labels = {"upload_file":''}

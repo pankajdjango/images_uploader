@@ -10,9 +10,20 @@
   }
 </style>
 
-<div class="container">
+<div class="">
   <div class="row border border-2 p-4 rounded mt-2">
     <div class="col-md-6 mb-4">
+      <h3 class="text-center p-2 border rounded bg-info text-light">Login Account</h3>
+      <form method="post">
+        {% csrf_token %}
+        {{ login_form.as_p }}
+        <div class="d-grid mt-3">
+          <input type="submit" class="btn btn-primary" value="Login" name="login" />
+        </div>
+      </form>
+    </div>
+    
+    <div class="col-md-6 ">
       <h3 class="text-center p-2 border rounded bg-info text-light">Register Account</h3>
       {% if messages and not login %}
       <ul class="messages">
@@ -30,16 +41,7 @@
       </form>
     </div>
 
-    <div class="col-md-6">
-      <h3 class="text-center p-2 border rounded bg-info text-light">Login Account</h3>
-      <form method="post">
-        {% csrf_token %}
-        {{ login_form.as_p }}
-        <div class="d-grid mt-3">
-          <input type="submit" class="btn btn-primary" value="Login" name="login" />
-        </div>
-      </form>
-    </div>
+    
   </div>
 </div>
 

@@ -8,6 +8,8 @@ from home import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("",views.home),
+    path("docs",views.docs),
+    path("delete_file/",views.delete_file),
     path("delete/",views.delete),
     path("logout",views.logout),
     path("upload",views.upload_images),

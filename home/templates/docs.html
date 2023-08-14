@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block body %}
+  <div class="">
+    <div class="py-5 text-center text-white" style="background: linear-gradient(135deg, #1642bf, #ffcced);">
+      {% if messages %}
+      <ul class="messages">
+          {% for message in messages %}
+              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+      </ul>
+      {% endif %}
+      <h1 class=" mb-3">Upload File</h1>
+      <form class="" action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit" class="btn btn-primary">Upload</button>
+      </form>
+    </div>
+
+    <div class="row">
+    {% for doc in docs %}
+    <div class="col-sm-4">
+      <div class="card m-2">
+        <a href="{{ doc.upload_file.url }}" class="btn text-light" style="background: linear-gradient(135deg, #000000, #ffcced);">{{ doc.name }}</a>
+        <div class="card-footer">
+          <small class="text-muted"> {{ doc.user_id.first_name }} {{ doc.user_id.last_name }}</small>
+          <small class="text-muted"> {{ doc.generated }}</small>
+          <small><a class="text-danger" href="/delete_file?id={{doc.id}}">Delete</a></small>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    </div>
+  </div>
+
+{% endblock  %}
+{% block js %}
+    
+<script type="text/javascript">
+    $( document ).ready(function() {
+      if ("{{ response }}" == "success") {
+        alert("File Uploaded Successfully.");
+      }
+    });
+</script>
+
+{% endblock  %}

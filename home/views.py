@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Image, ImageForm, ImagesForm, UserAccountForm,LoginForm,UserAccount
+from .models import Image, ImageForm, ImagesForm, UserAccountForm,LoginForm,UserAccount, DocsForm,Docs
 from django.contrib import messages
 from .authentication import hk_required,already_login,hk_or_login_required,admin_required
 import os
@@ -57,13 +57,22 @@ def upload_images(request):
     })
     return render(request, "uploaded_images.html", context)
 
-@admin_required
+@hk_or_login_required
 def delete(request):
+    id = request.GET.get("id")
+    super_user = UserAccount.objects.filter(user_id=request.session.get("user_id"),is_staff=True).exists()
     try:
-        image = Image.objects.get(id=request.GET.get("id"))
-        image.delete()
-    except Image.DoesNotExist:
+        if super_user:
+                image = Image.objects.get(id=id)
+                image.delete()
+        else:
+            document = Image.objects.get(id=id)
+            document.active = False
+            document.save()
+            return redirect("/")
+    except Exception as e:
         pass
+    
     return redirect("/upload")
 
 @already_login
@@ -99,3 +108,38 @@ def register_user(request):
 def logout(request):
     request.session.clear()
     return redirect("/login")
+
+
+@hk_or_login_required
+def docs(request):
+    context = {}
+    user_id = request.session.get("user_id", 1)
+
+    if request.method == "POST":
+        form = DocsForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES['upload_file']
+            name, extension = os.path.splitext(file.name)
+            file_name = name + extension
+            duplicate = Docs.objects.filter(name=file_name).exists()
+            obj = Docs(upload_file=file, name=file_name, duplicate=duplicate, user_id_id=user_id)
+            obj.save()
+            context["response"] = "success"
+        else:
+            context["response"] = "fail"
+    if UserAccount.objects.filter(user_id=user_id, is_staff=True).exists():
+        docs = Docs.objects.all().order_by('-id')
+    else:
+        docs = Docs.objects.filter(user_id_id=user_id, active=True).order_by('-id')
+    context.update({"form": DocsForm(), "docs": docs})
+    return render(request, "docs.html", context)
+
+
+@hk_or_login_required
+def delete_file(request):
+    try:
+        file = Docs.objects.get(id=request.GET.get("id"))
+        file.delete()
+    except Docs.DoesNotExist:
+        pass
+    return redirect("/docs")

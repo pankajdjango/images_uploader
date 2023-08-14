@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block body %}
-  <div class="container">
-    <div class="py-5 text-center bg-secondary text-white">
-      <h1 class=" mb-3">Uplaod Image</h1>
+  <div class="">
+    <div class="py-5 text-center text-white" style="background: linear-gradient(135deg, #1642bf, #ffcced);">
+      <h1 class=" mb-3">Uplaod Multiple Image</h1>
       <form class="" action="" method="post" enctype="multipart/form-data">
         {%csrf_token%}
         {{form}}
@@ -17,7 +17,8 @@
       <div class="card m-2">
         <img src="{{image.photo.url}}" class="card-img-top" height="" alt="">
         <div class="card-footer">
-          <!-- <small class="text-muted">{{image.generated}}</small> -->
+          <small class="text-muted">{{image.user_id.first_name}}  {{image.user_id.last_name}}</small>
+          <small class="text-muted">{{image.generated}}</small>
           <small class="text-danger"><a href="/delete?id={{image.id}}">delete</a></small>
         </div>
       </div>
