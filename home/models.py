@@ -6,6 +6,9 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from multiupload.fields import MultiFileField
 import os
+from pytz import timezone
+from datetime import datetime
+date_time = datetime.now(timezone("Asia/Kolkata")).strftime('%Y-%m-%d %H:%M:%S.%f')
 
 
 # Create your models here.
@@ -18,8 +21,8 @@ class UserAccount(models.Model):
     mobile_no = models.CharField(max_length=10,unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    generated = models.DateTimeField(auto_now_add=True)
-    date_joined = models.DateTimeField(default=timezone.now)
+    generated = models.DateTimeField(default=date_time)
+    date_joined = models.DateTimeField(default=date_time)
 
     def check_password(self,password):
         if self.password == password:
@@ -42,7 +45,7 @@ def uploaded_images(instance, filename):
 class Image(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
     photo = models.ImageField(upload_to=uploaded_images)
-    generated = models.DateTimeField(auto_now_add=True)
+    generated = models.DateTimeField(default=date_time)
     active = models.BooleanField(default=True)
     duplicate = models.BooleanField(default=False)
     source = models.CharField(max_length=50, default="image server")
@@ -146,7 +149,7 @@ def validate_file_size(value):
 class Docs(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
     upload_file = models.FileField(upload_to=uploaded_file, validators=[validate_file_size], null=True, blank=True)
-    generated = models.DateTimeField(auto_now_add=True)
+    generated = models.DateTimeField(default=date_time)
     active = models.BooleanField(default=True)
     duplicate = models.BooleanField(default=False)
     user_id = models.ForeignKey(UserAccount, on_delete=models.CASCADE, db_column='user_id', null=True)
